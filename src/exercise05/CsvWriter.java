@@ -1,44 +1,74 @@
 package exercise05;
 
+import java.io.*;
+
+/**
+ * Changes:
+ * 
+ * - Added Writer
+ * - changed for loop 
+ * 
+ * @author kelu
+ */
 public class CsvWriter {
-	public CsvWriter() {
-	}
 
-	public void write(String[][] lines) {
-		for (int i = 0; i < lines.length; i++)
-			writeLine(lines[i]);
-	}
+    private Writer out;
+    
+    public CsvWriter() {
+        out = new StringWriter();
+    }
+    
+    public CsvWriter(Writer writer) {
+        out = writer;
+    }
 
-	private void writeLine(String[] fields) {
-		if (fields.length == 0)
-			System.out.println();
-		else {
-			writeField(fields[0]);
+    public void write(String[][] lines) throws IOException {
+        for (String[] line : lines) {
+            writeLine(line);
+        }
+    }
 
-			for (int i = 1; i < fields.length; i++) {
-				System.out.print(",");
-				writeField(fields[i]);
-			}
-			System.out.println();
-		}
-	}
+    private void writeLine(String[] fields) throws IOException {
+        if (fields.length == 0) {
+            out.write("\n");
+        } else {
+            writeField(fields[0]);
 
-	private void writeField(String field) {
-		if (field.indexOf(',') != -1 || field.indexOf('\"') != -1)
-			writeQuoted(field);
-		else
-			System.out.print(field);
-	}
+            for (int i = 1; i < fields.length; i++) {
+                out.write(",");
+                writeField(fields[i]);
+            }
+            out.write("\n");
+        }
+    }
 
-	private void writeQuoted(String field) {
-		System.out.print('\"');
-		for (int i = 0; i < field.length(); i++) {
-			char c = field.charAt(i);
-			if (c == '\"')
-				System.out.print("\"\"");
-			else
-				System.out.print(c);
-		}
-		System.out.print('\"');
-	}
+    private void writeField(String field) throws IOException {
+        if (field.indexOf(',') != -1 || field.indexOf('\"') != -1) {
+            writeQuoted(field);
+        } else {
+            out.write(field);
+        }
+    }
+
+    private void writeQuoted(String field) throws IOException {
+        out.write('\"');
+        for (int i = 0; i < field.length(); i++) {
+            char c = field.charAt(i);
+            if (c == '\"') {
+                out.write("\"\"");
+            } else {
+                out.write(c);
+            }
+        }
+        out.write('\"');
+    }
+    
+    public Writer getWriter() {
+        return out;
+    }
+    
+    @Override
+    public String toString() {
+        return out.toString();
+    }
 }

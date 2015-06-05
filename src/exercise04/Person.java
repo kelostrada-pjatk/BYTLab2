@@ -51,7 +51,7 @@ public class Person {
         try {
             return formatPerson();
         } catch (IOException ex) {
-            return null;
+            return last + ", " + first + ((middle == null) ? "" : " " + middle);
         }
     }
 }
