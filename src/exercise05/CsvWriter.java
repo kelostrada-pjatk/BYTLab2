@@ -12,7 +12,7 @@ import java.io.*;
  */
 public class CsvWriter {
 
-    private Writer out;
+    private final Writer out;
     
     public CsvWriter() {
         out = new StringWriter();
