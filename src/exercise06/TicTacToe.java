@@ -38,34 +38,61 @@ public class TicTacToe {
 
     public char winner() {
         // check for horizontal winner
-        for (int i = 0; i < 9; i += 3) {
-            if (board.charAt(i) != '-'
-                    && board.charAt(i + 1) == board.charAt(i)
-                    && board.charAt(i + 2) == board.charAt(i)) {
-                return board.charAt(i);
+        for (int i = 0; i < 3; i++) {
+            char winner = horizontalWinner(i);
+            if (winner != '-') {
+                return winner;
             }
         }
 
         // check for vertical winner
         for (int i = 0; i < 3; ++i) {
-            if (board.charAt(i) != '-'
-                    && board.charAt(i + 3) == board.charAt(i)
-                    && board.charAt(i + 6) == board.charAt(i)) {
-                return board.charAt(i);
+            char winner = verticalWinner(i);
+            if (winner != '-') {
+                return winner;
             }
         }
 
         // check for diagonal winner
-        if (board.charAt(0) != '-' && board.charAt(4) == board.charAt(0)
-                && board.charAt(8) == board.charAt(0)) {
-            return board.charAt(0);
-        }
-        if (board.charAt(2) != '-' && board.charAt(4) == board.charAt(2)
-                && board.charAt(6) == board.charAt(2)) {
-            return board.charAt(2);
+        for (int i = 0; i < 2; ++i) {
+            char winner = diagonalWinner(i);
+            if (winner != '-') {
+                return winner;
+            }
         }
 
         // no winner yet
         return '-';
     }
+    
+    char horizontalWinner(int i) {
+        i *= 3;
+        char piece = board.charAt(i);
+        if (piece != '-'
+                && board.charAt(i + 1) == piece
+                && board.charAt(i + 2) == piece) {
+            return piece;
+        }
+        return '-';
+    }
+    
+    char verticalWinner(int i) {
+        char piece = board.charAt(i);
+        if (piece != '-'
+                && board.charAt(i + 3) == piece
+                && board.charAt(i + 6) == piece) {
+            return piece;
+        }
+        return '-';
+    }
+    
+    char diagonalWinner(int i) {
+        if (i > 1 || i < 0) return '-';
+        if (board.charAt(2*i) != '-' && board.charAt(4) == board.charAt(2*i)
+                && board.charAt(8 - 2*i) == board.charAt(2*i)) {
+            return board.charAt(2*i);
+        }
+        return '-';
+    }
+    
 }
